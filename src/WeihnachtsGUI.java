@@ -9,10 +9,12 @@ public class WeihnachtsGUI extends JFrame {
 
     JPanel leftPanel;
     JPanel rightPanel;
+    JPanel statusPanel;
 
     JPanel autorPanel;
 
     JPanel parameterPanel;
+
 
 
     Leinwand leinwand;
@@ -24,6 +26,7 @@ public class WeihnachtsGUI extends JFrame {
     ButtonGroup buttonGroup;
     JCheckBox checkBox;
     JButton button;
+    JLabel statusLabel;
 
     TitledBorder titledBorder;
 
@@ -38,6 +41,11 @@ public class WeihnachtsGUI extends JFrame {
         rightPanel = new JPanel();
         rightPanel.setBackground(new Color(238, 238, 238));
         rightPanel.setBounds(750,0,250,700);
+
+        statusPanel = new JPanel();
+        statusPanel.setBackground(new Color(238, 238, 238));
+        statusPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        statusPanel.setBounds(0, 700, 750,50);
 
         leinwand = new Leinwand();
         leinwand.setPreferredSize(new Dimension(750,700));
@@ -71,6 +79,12 @@ public class WeihnachtsGUI extends JFrame {
         buttonGroup.add(radio2);
         buttonGroup.add(checkBox);
 
+        button = new JButton("Start");
+        button.setPreferredSize(new Dimension(250,40));
+
+        statusLabel = new JLabel();
+        statusLabel.setText("Tannenbaum");
+
         parameterPanel.add(radio1);
         parameterPanel.add(radio2);
         parameterPanel.add(checkBox);
@@ -82,9 +96,13 @@ public class WeihnachtsGUI extends JFrame {
 
         rightPanel.add(autorPanel);
         rightPanel.add(parameterPanel);
+        rightPanel.add(button);
+
+        statusPanel.add(statusLabel);
 
         c.add(leftPanel);
         c.add(rightPanel);
+        c.add(statusPanel);
 
 
     }
