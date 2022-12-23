@@ -9,7 +9,6 @@ public class Main {
         weihnachtsGUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         weihnachtsGUI.setVisible(true);
         weihnachtsGUI.setLocationRelativeTo(null);
-        weihnachtsGUI.setResizable(false);
 
     }
 }

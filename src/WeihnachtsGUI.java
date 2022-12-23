@@ -1,110 +1,120 @@
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class WeihnachtsGUI extends JFrame {
+public class WeihnachtsGUI extends JFrame implements ActionListener {
 
-    Container c;
-
-    JPanel leftPanel;
-    JPanel rightPanel;
-    JPanel statusPanel;
-
-    JPanel autorPanel;
-
-    JPanel parameterPanel;
-
-
-
-    Leinwand leinwand;
-
-    JLabel label;
-    JTextField text;
-    JRadioButton radio1;
-    JRadioButton radio2;
-    ButtonGroup buttonGroup;
-    JCheckBox checkBox;
-    JButton button;
-    JLabel statusLabel;
-
-    TitledBorder titledBorder;
+    private JPanel rechteSeite, rechteSeiteOben, rechteSeiteParameter, rechteSeiteStart;
+    private JRadioButton tannenbaum, wald;
+    private JCheckBox santa;
+    private JButton startButton;
+    private ButtonGroup buttonGroup;
+    private Leinwand leinwand;
+    private JLabel autor, status;
+    private JTextField text;
 
     public WeihnachtsGUI() {
 
-        c = getContentPane();
-        c.setLayout(null);
+        rechteSeite = new JPanel();
+        rechteSeiteOben = new JPanel();
+        rechteSeiteParameter = new JPanel();
+        rechteSeiteStart = new JPanel();
 
-        leftPanel = new JPanel();
-        leftPanel.setBounds(0,0,750,700);
-
-        rightPanel = new JPanel();
-        rightPanel.setBackground(new Color(238, 238, 238));
-        rightPanel.setBounds(750,0,250,700);
-
-        statusPanel = new JPanel();
-        statusPanel.setBackground(new Color(238, 238, 238));
-        statusPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        statusPanel.setBounds(0, 700, 750,50);
-
+        // leinwand erzeugen
         leinwand = new Leinwand();
-        leinwand.setPreferredSize(new Dimension(750,700));
-        leinwand.setBackground(new Color(0,0,0));
 
-        autorPanel = new JPanel();
-        autorPanel.setPreferredSize(new Dimension(250,30));
+        autor = new JLabel("Autor: ");
+        autor.setPreferredSize(new Dimension(43,20));
+        text = new JTextField("Text");
+        text.setPreferredSize(new Dimension(193,20));
 
-        label = new JLabel();
-        label.setPreferredSize(new Dimension(40,30));
-        label.setText("Autor:");
-
-        text = new JTextField();
-        text.setPreferredSize(new Dimension(200,30));
-        text.setText("Text");
-        text.setBackground(new Color(255,255,255));
-
-        titledBorder = new TitledBorder("Parameter");
-
-        parameterPanel = new JPanel();
-        parameterPanel.setPreferredSize(new Dimension(250,100));
-        parameterPanel.setLayout(new GridLayout(3, 1));
-        parameterPanel.setBorder(titledBorder);
-
-        radio1 = new JRadioButton("Tannenbaum");
-        radio2 = new JRadioButton("Wald");
-        checkBox = new JCheckBox("Santa");
-
+        // Radio-Buttons werden in eine ButtonGroup eingebunden
         buttonGroup = new ButtonGroup();
-        buttonGroup.add(radio1);
-        buttonGroup.add(radio2);
-        buttonGroup.add(checkBox);
+        tannenbaum = new JRadioButton("Tannenbaum");
+        tannenbaum.setPreferredSize(new Dimension(240,20));
+        wald = new JRadioButton("Wald");
+        wald.setPreferredSize(new Dimension(240,20));
+        buttonGroup.add(tannenbaum);
+        buttonGroup.add(wald);
 
-        button = new JButton("Start");
-        button.setPreferredSize(new Dimension(250,40));
+        // Erstellung der Santa-Checkbox
+        santa = new JCheckBox("Santa");
+        santa.setPreferredSize(new Dimension(240,20));
 
-        statusLabel = new JLabel();
-        statusLabel.setText("Tannenbaum");
+        // ActionListener auf die Parameter anwenden
+        tannenbaum.addActionListener(this);
+        wald.addActionListener(this);
+        santa.addActionListener(this);
 
-        parameterPanel.add(radio1);
-        parameterPanel.add(radio2);
-        parameterPanel.add(checkBox);
+        // Zuweisung von Border und Größe zum Parameterblock
+        rechteSeiteParameter.setPreferredSize(new Dimension(240, 100));
+        rechteSeiteParameter.setBorder(new TitledBorder("Parameter"));
 
-        autorPanel.add(label);
-        autorPanel.add(text);
+        // Elemente werden dem Parameterblock hinzugefügt
+        rechteSeiteParameter.add(tannenbaum);
+        rechteSeiteParameter.add(wald);
+        rechteSeiteParameter.add(santa);
 
-        leftPanel.add(leinwand);
+        // Autor-Eingabe und Parameter werden in einen Block zusammengefügt
+        rechteSeiteOben.setPreferredSize(new Dimension(250,150));
+        rechteSeiteOben.setLayout(new FlowLayout(FlowLayout.LEFT,5,0));
+        rechteSeiteOben.add(autor);
+        rechteSeiteOben.add(text);
+        rechteSeiteOben.add(rechteSeiteParameter);
 
-        rightPanel.add(autorPanel);
-        rightPanel.add(parameterPanel);
-        rightPanel.add(button);
+        // Start Button erstellen und in JPanel setzen
+        startButton = new JButton("Start");
+        startButton.addActionListener(this);
+        rechteSeiteStart = new JPanel();
+        rechteSeiteStart.setLayout(new BorderLayout());
+        rechteSeiteStart.add(startButton);
 
-        statusPanel.add(statusLabel);
+        // Statusanzeige erstellen
+        status = new JLabel();
+        status.setText("-");
+        status.setLayout(new BorderLayout());
 
-        c.add(leftPanel);
-        c.add(rightPanel);
-        c.add(statusPanel);
+        // Elemente der rechten Seite zuweisen
+        rechteSeite.setLayout(new BorderLayout());
+        rechteSeite.add(rechteSeiteOben, BorderLayout.NORTH);
+        rechteSeite.add(rechteSeiteStart, BorderLayout.PAGE_END);
 
+        // rechte und linke Seite dem Frame zuweisen
+        this.setLayout(new BorderLayout(5, 0));
+        this.add(leinwand, BorderLayout.CENTER);
+        this.add(rechteSeite, BorderLayout.EAST);
+        this.add(status, BorderLayout.PAGE_END);
 
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+        if (tannenbaum.isSelected()) {
+            if (santa.isSelected()) {
+                status.setText("Tannenbaum plus Santa");
+            }
+            else {
+                status.setText("Tannenbaum");
+            }
+        }
+
+        if (wald.isSelected()) {
+            if (santa.isSelected()) {
+                status.setText("Wald plus Santa");
+            }
+            else {
+                status.setText("Wald");
+            }
+        }
+
+        if (!wald.isSelected() && !tannenbaum.isSelected()) {
+            status.setText("Santa");
+        }
+
+        if (tannenbaum.isSelected()) leinwand.tannenbaumZeichnen(leinwand.getGraphics());
+        if (wald.isSelected()) leinwand.waldZeichnen(leinwand.getGraphics());
+    }
 }
