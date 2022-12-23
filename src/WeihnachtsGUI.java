@@ -13,7 +13,9 @@ public class WeihnachtsGUI extends JFrame implements ActionListener {
     private ButtonGroup buttonGroup;
     private Leinwand leinwand;
     private JLabel autor, status;
+    private ImageIcon santaImg;
     private JTextField text;
+
 
     public WeihnachtsGUI() {
 
@@ -114,7 +116,19 @@ public class WeihnachtsGUI extends JFrame implements ActionListener {
             status.setText("Santa");
         }
 
-        if (tannenbaum.isSelected()) leinwand.tannenbaumZeichnen(leinwand.getGraphics());
-        if (wald.isSelected()) leinwand.waldZeichnen(leinwand.getGraphics());
+        if (e.getSource() == this.santa) {
+            if (santa.isSelected()) {
+                leinwand.santaZeichnen(leinwand.getGraphics(), true);
+            }
+            else {
+                leinwand.santaZeichnen(leinwand.getGraphics(), false);
+            }
+        }
+
+        if (e.getSource() == this.startButton) {
+            if (tannenbaum.isSelected()) leinwand.tannenbaumZeichnen(leinwand.getGraphics());
+            if (wald.isSelected()) leinwand.waldZeichnen(leinwand.getGraphics());
+        }
+
     }
 }
