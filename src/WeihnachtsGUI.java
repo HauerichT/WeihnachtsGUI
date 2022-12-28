@@ -104,6 +104,7 @@ public class WeihnachtsGUI extends JFrame implements ActionListener {
             }
         }
 
+
         if (wald.isSelected()) {
             if (santa.isSelected()) {
                 status.setText("Wald plus Santa");
