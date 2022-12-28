@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 
 public class WeihnachtsGUI extends JFrame implements ActionListener {
 
+    private boolean keinSantaErzeugt = true;
+
     private JPanel rechteSeite, rechteSeiteOben, rechteSeiteParameter, rechteSeiteStart;
     private JRadioButton tannenbaum, wald;
     private JCheckBox santa;
@@ -13,7 +15,6 @@ public class WeihnachtsGUI extends JFrame implements ActionListener {
     private ButtonGroup buttonGroup;
     private Leinwand leinwand;
     private JLabel autor, status;
-    private ImageIcon santaImg;
     private JTextField text;
 
 
@@ -116,18 +117,27 @@ public class WeihnachtsGUI extends JFrame implements ActionListener {
             status.setText("Santa");
         }
 
-        if (e.getSource() == this.santa) {
-            if (santa.isSelected()) {
-                leinwand.santaZeichnen(leinwand.getGraphics(), true);
-            }
-            else {
-                leinwand.santaZeichnen(leinwand.getGraphics(), false);
-            }
+        if (!wald.isSelected() && !tannenbaum.isSelected() && !santa.isSelected()) {
+            status.setText("-");
+        }
+
+
+
+        if (e.getSource() == this.santa && keinSantaErzeugt) {
+            leinwand.santaZeichnen(leinwand.getGraphics());
+            keinSantaErzeugt = false;
+        }
+
+        if (e.getSource() == this.santa && santa.isSelected()) {
+            leinwand.santaEinblenden();
+        }
+        else if (e.getSource() == this.santa && !santa.isSelected()) {
+            leinwand.santaAusblenden();
         }
 
         if (e.getSource() == this.startButton) {
-            if (tannenbaum.isSelected()) leinwand.tannenbaumZeichnen(leinwand.getGraphics());
-            if (wald.isSelected()) leinwand.waldZeichnen(leinwand.getGraphics());
+            if (tannenbaum.isSelected()) leinwand.tannenbaumZeichnen(leinwand.getGraphics(), "tannenbaum");
+            if (wald.isSelected()) leinwand.tannenbaumZeichnen(leinwand.getGraphics(), "wald");
         }
 
     }
