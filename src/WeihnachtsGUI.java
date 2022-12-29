@@ -6,35 +6,34 @@ import java.awt.event.ActionListener;
 
 public class WeihnachtsGUI extends JFrame implements ActionListener {
 
+    // Instanzvariablen
     private boolean keinSantaErzeugt = true;
-
-    private JPanel rechteSeite, rechteSeiteOben, rechteSeiteParameter, rechteSeiteStart;
-    private JRadioButton tannenbaum, wald;
-    private JCheckBox santa;
-    private JButton startButton;
-    private ButtonGroup buttonGroup;
-    private Leinwand leinwand;
-    private JLabel autor, status;
-    private JTextField text;
+    private final JRadioButton tannenbaum, wald;
+    private final JCheckBox santa;
+    private final JButton startButton;
+    private final Leinwand leinwand;
+    private final JLabel status;
 
 
     public WeihnachtsGUI() {
 
-        rechteSeite = new JPanel();
-        rechteSeiteOben = new JPanel();
-        rechteSeiteParameter = new JPanel();
-        rechteSeiteStart = new JPanel();
+        // JPanels für die einzelnen Elemente der rechten Seite erzeugen
+        JPanel rechteSeite = new JPanel();
+        JPanel rechteSeiteOben = new JPanel();
+        JPanel rechteSeiteParameter = new JPanel();
+        JPanel rechteSeiteStart = new JPanel();
 
-        // leinwand erzeugen
+        // Leinwand erzeugen
         leinwand = new Leinwand();
 
-        autor = new JLabel("Autor: ");
+        // Autor und zugehöriges Textfeld erzeugen
+        JLabel autor = new JLabel("Autor: ");
         autor.setPreferredSize(new Dimension(43,20));
-        text = new JTextField("Text");
+        JTextField text = new JTextField("Text");
         text.setPreferredSize(new Dimension(193,20));
 
-        // Radio-Buttons werden in eine ButtonGroup eingebunden
-        buttonGroup = new ButtonGroup();
+        // Radio-Buttons für Tannenbaum und Wald werden in eine ButtonGroup eingebunden
+        ButtonGroup buttonGroup = new ButtonGroup();
         tannenbaum = new JRadioButton("Tannenbaum");
         tannenbaum.setPreferredSize(new Dimension(240,20));
         wald = new JRadioButton("Wald");
@@ -67,10 +66,9 @@ public class WeihnachtsGUI extends JFrame implements ActionListener {
         rechteSeiteOben.add(text);
         rechteSeiteOben.add(rechteSeiteParameter);
 
-        // Start Button erstellen und in JPanel setzen
+        // Start-Button erstellen
         startButton = new JButton("Start");
         startButton.addActionListener(this);
-        rechteSeiteStart = new JPanel();
         rechteSeiteStart.setLayout(new BorderLayout());
         rechteSeiteStart.add(startButton);
 
@@ -92,9 +90,11 @@ public class WeihnachtsGUI extends JFrame implements ActionListener {
 
     }
 
+    // Event-Handler
     @Override
     public void actionPerformed(ActionEvent e) {
 
+        // Statusanzeige setzen, je nachdem welche Buttons gewählt sind
         if (tannenbaum.isSelected()) {
             if (santa.isSelected()) {
                 status.setText("Tannenbaum plus Santa");
@@ -103,7 +103,6 @@ public class WeihnachtsGUI extends JFrame implements ActionListener {
                 status.setText("Tannenbaum");
             }
         }
-
 
         if (wald.isSelected()) {
             if (santa.isSelected()) {
@@ -123,12 +122,13 @@ public class WeihnachtsGUI extends JFrame implements ActionListener {
         }
 
 
-
+        // Santa zeichnen, wenn noch kein Santa erzeugt wurde
         if (e.getSource() == this.santa && keinSantaErzeugt) {
             leinwand.santaZeichnen(leinwand.getGraphics());
             keinSantaErzeugt = false;
         }
 
+        // Santa ein- und ausblenden
         if (e.getSource() == this.santa && santa.isSelected()) {
             leinwand.santaEinblenden();
         }
@@ -136,6 +136,7 @@ public class WeihnachtsGUI extends JFrame implements ActionListener {
             leinwand.santaAusblenden();
         }
 
+        // Tannenbaum oder Wald zeichnen, wenn der Start-Button gedrückt wird
         if (e.getSource() == this.startButton) {
             if (tannenbaum.isSelected()) leinwand.tannenbaumZeichnen(leinwand.getGraphics(), "tannenbaum");
             if (wald.isSelected()) leinwand.tannenbaumZeichnen(leinwand.getGraphics(), "wald");
