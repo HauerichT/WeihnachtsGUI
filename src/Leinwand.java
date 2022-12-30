@@ -18,54 +18,41 @@ public class Leinwand extends JPanel {
         this.setBackground(Color.BLACK);
     }
 
+    public void tannenbaumErzeugen(Graphics g) {
+        int randomX;
+        int randomY;
+        do {
+            randomX = (int) (Math.random()*getWidth());
+            randomY = (int) (Math.random()*getHeight());
+        } while (randomY < getHeight()/1.5 || randomX < 0 || randomX > getWidth()-70);
+
+        // zufällige RGB-Werte erzeugen
+        int randomR = (int) (Math.random() * 255);
+        int randomG = (int) (Math.random() * 255);
+        int randomB = (int) (Math.random() * 255);
+
+        // Tannenbaum erzeugen und auf Leinwand zeichnen
+        for (int i = 0; i < 3; i++) {
+            int[] x = {randomX+i*5,randomX+35,randomX+70-i*5};
+            int[] y = {randomY-i*30,randomY-55-i*30,randomY-i*30};
+            g.setColor(new Color(randomR, randomG, randomB));
+            g.fillPolygon(x,y,3);
+        }
+    }
+
+
     // Tannenbaum bzw. Wald zeichnen
     public void tannenbaumZeichnen(Graphics g, String selectedButton) {
-
         // zeichnet einen Tannenbaum
-        if (selectedButton.equals("tannenbaum")) {
-            // zufällige Position erzeugen
-            int randomX;
-            int randomY;
-            do {
-                randomX = (int) (Math.random()*getWidth());
-                randomY = (int) (Math.random()*getHeight());
-            } while (randomY < getHeight()/1.5 || randomX < 0 || randomX > getWidth()-70);
-
-            // Tannenbaum erzeugen und auf Leinwand zeichnen
-            for (int i = 0; i < 3; i++) {
-                int[] x = {randomX+i*5,randomX+35,randomX+70-i*5};
-                int[] y = {randomY-i*30,randomY-55-i*30,randomY-i*30};
-                g.setColor(new Color(41, 97, 23));
-                g.fillPolygon(x,y,3);
+        if (selectedButton.equals("Tannenbaum")) {
+            tannenbaumErzeugen(g);
+        }
+        // zeichnet 10 Tannenbäume
+        else if (selectedButton.equals("Wald")) {
+            for (int i = 0; i <= 10; i++) {
+                tannenbaumErzeugen(g);
             }
         }
-        // zeichnet 10 Tannenbäume in unterschiedlicher Farbe
-        else if (selectedButton.equals("wald")) {
-            // 10 Tannenbäume erzeugen
-            for (int k = 0; k <= 10; k++) {
-                // zufällige Position erzeugen
-                int randomX;
-                int randomY;
-                do {
-                    randomX = (int) (Math.random()*getWidth());
-                    randomY = (int) (Math.random()*getHeight());
-                } while (randomY < getHeight()/1.5 || randomX < 0 || randomX > getWidth()-70);
-
-                // zufällige RGB-Werte erzeugen
-                int randomR = (int) (Math.random() * 255);
-                int randomG = (int) (Math.random() * 255);
-                int randomB = (int) (Math.random() * 255);
-
-                // Tannenbaum erzeugen und auf Leinwand zeichnen
-                for (int i = 0; i < 3; i++) {
-                    int[] x = {randomX+i*5,randomX+35,randomX+70-i*5};
-                    int[] y = {randomY-i*30,randomY-55-i*30,randomY-i*30};
-                    g.setColor(new Color(randomR,randomG,randomB));
-                    g.fillPolygon(x,y,3);
-                }
-            }
-        }
-
     }
 
     // Santa ausblenden

@@ -1,8 +1,7 @@
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
 public class WeihnachtsGUI extends JFrame implements ActionListener {
 
@@ -138,8 +137,8 @@ public class WeihnachtsGUI extends JFrame implements ActionListener {
 
         // Tannenbaum oder Wald zeichnen, wenn der Start-Button gedrückt wird
         if (e.getSource() == this.startButton) {
-            if (tannenbaum.isSelected()) leinwand.tannenbaumZeichnen(leinwand.getGraphics(), "tannenbaum");
-            if (wald.isSelected()) leinwand.tannenbaumZeichnen(leinwand.getGraphics(), "wald");
+            if (tannenbaum.isSelected()) leinwand.tannenbaumZeichnen(leinwand.getGraphics(), tannenbaum.getText());
+            if (wald.isSelected()) leinwand.tannenbaumZeichnen(leinwand.getGraphics(), wald.getText());
         }
 
     }
