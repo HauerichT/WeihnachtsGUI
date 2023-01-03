@@ -3,19 +3,25 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class Leinwand extends JPanel {
+public class Leinwand extends JPanel implements KeyListener, ActionListener {
 
     // Instanzvariablen
     private BufferedImage santaImg;
+    private int santaX;
+    private int santaY;
 
     // Konstruktor
     Leinwand() {
-        // setzt Leinwand-Hintergrund auf Schwarz
         this.setBackground(Color.BLACK);
+        this.addKeyListener(this);
+        this.santaX = 100;
+        this.santaY = 60;
     }
 
     public void tannenbaumErzeugen(Graphics g) {
@@ -69,35 +75,64 @@ public class Leinwand extends JPanel {
         }
     }
 
-    // Santa zeichnen und animieren
-    public void santaZeichnen (Graphics g){
-        // blendet Santa zu Beginn ein
+    public void startAnimation() {
         santaEinblenden();
-
-        // Timer zur Erstellung der Animation
-        Timer timer = new Timer(8, new ActionListener() {
-            // Counter zur Speicherung der aktuellen Position des Bildes
-            int postion = -120;
-
-            // wird im angegeben delay immer wieder ausgeführt
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // erzeugt Bild von Santa
-                g.setColor(Color.BLACK);
-                g.fillRect(postion, 60, 100,100);
-                g.drawImage(santaImg, postion, 60, 100,100, null);
-                // erhöht Position vom Bild um 1
-                postion++;
-
-                // wenn das Bild das Ende der Leinwand erreicht, wird das Bild wieder nach links gesetzt
-                if (postion == getWidth()) {
-                    g.fillRect(postion, 60, 100,100);
-                    postion = -120;
-                }
-            }
-        });
-        // startet den Timer
+        Timer timer = new Timer(8, this);
         timer.start();
     }
+
+    // Santa zeichnen und animieren
+    public void santaZeichnen (){
+        requestFocus();
+
+        this.getGraphics().setColor(Color.BLACK);
+        this.getGraphics().fillRect(santaX, santaY, 100, 100);
+        this.getGraphics().drawImage(santaImg, santaX, santaY, 100, 100, null);
+        santaX++;
+
+        if (santaX >= getWidth()) {
+            this.getGraphics().fillRect(santaX, santaY, 100, 100);
+            santaX = 0;
+        }
+
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (santaY <= 0) {
+            if (e.getKeyChar() == 'w' || e.getKeyChar() == 's') {
+                santaY = 0;
+            }
+        }
+
+        if (santaY+100 <= getHeight()/2) {
+            if (e.getKeyChar() == 'w') {
+                santaY -= 5;
+            }
+            if (e.getKeyChar() == 's') {
+                santaY += 5;
+            }
+        }
+
+        if (e.getKeyChar() == 'w') {
+            santaY -= 5;
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        this.santaZeichnen();
+    }
+
 
 }
