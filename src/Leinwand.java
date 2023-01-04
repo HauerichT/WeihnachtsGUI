@@ -20,11 +20,15 @@ public class Leinwand extends JPanel implements KeyListener, ActionListener {
     Leinwand() {
         this.setBackground(Color.BLACK);
         this.addKeyListener(this);
-        this.santaX = 100;
+
+        // Santa-Position
+        this.santaX = -120;
         this.santaY = 60;
     }
 
+    // Methode erzeugt einen Tannenbaum
     public void tannenbaumErzeugen(Graphics g) {
+        // zufällige Position erzeugen
         int randomX;
         int randomY;
         do {
@@ -75,26 +79,59 @@ public class Leinwand extends JPanel implements KeyListener, ActionListener {
         }
     }
 
+    // Santa animieren
     public void startAnimation() {
+        // blendet das Bild zunächst ein
         santaEinblenden();
-        Timer timer = new Timer(8, this);
+        // erzeugt und startet einen Timer
+        Timer timer = new Timer(10, this);
         timer.start();
     }
 
-    // Santa zeichnen und animieren
-    public void santaZeichnen (){
+    // Santa zeichnen
+    public void santaZeichnen() {
+        // setzt den Fokus, um die Steuerung zu gewähren
         requestFocus();
 
-        this.getGraphics().setColor(Color.BLACK);
-        this.getGraphics().fillRect(santaX, santaY, 100, 100);
-        this.getGraphics().drawImage(santaImg, santaX, santaY, 100, 100, null);
+        // zeichnet den aktuellen Santa
+        this.getGraphics().fillRect(santaX+8, santaY-8, 50, 100);
+        this.getGraphics().fillRect(santaX, santaY, 50, 100);
+        this.getGraphics().drawImage(santaImg, santaX, santaY, 80, 80, null);
         santaX++;
 
+        // prüft, ob der Santa am Ende des Rahmens angekommen ist
         if (santaX >= getWidth()) {
-            this.getGraphics().fillRect(santaX, santaY, 100, 100);
-            santaX = 0;
+            this.getGraphics().fillRect(santaX+8, santaY-8, 50, 100);
+            this.getGraphics().fillRect(santaX, santaY, 50, 100);
+            santaX = -120;
         }
 
+    }
+
+    // prüft, ob ein Key gedrückt wird
+    @Override
+    public void keyReleased(KeyEvent e) {
+        // prüft, ob obere Grenze erreicht wurde
+        if (santaY <= 0) {
+            if (e.getKeyChar() == 'w' || e.getKeyChar() == 's') {
+                santaY = 0;
+            }
+        }
+
+        // prüft, ob untere Grenze erreicht wurde
+        if (santaY+100 <= getHeight()/2) {
+            // bewegt Santa nach oben bzw. unten
+            if (e.getKeyChar() == 'w') {
+                santaY -= 8;
+            }
+            if (e.getKeyChar() == 's') {
+                santaY += 8;
+            }
+        }
+
+        if (e.getKeyChar() == 'w') {
+            santaY -= 8;
+        }
     }
 
     @Override
@@ -104,31 +141,10 @@ public class Leinwand extends JPanel implements KeyListener, ActionListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (santaY <= 0) {
-            if (e.getKeyChar() == 'w' || e.getKeyChar() == 's') {
-                santaY = 0;
-            }
-        }
-
-        if (santaY+100 <= getHeight()/2) {
-            if (e.getKeyChar() == 'w') {
-                santaY -= 5;
-            }
-            if (e.getKeyChar() == 's') {
-                santaY += 5;
-            }
-        }
-
-        if (e.getKeyChar() == 'w') {
-            santaY -= 5;
-        }
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
 
     }
 
+    // Action-Listener zur Animation des Santas
     @Override
     public void actionPerformed(ActionEvent e) {
         this.santaZeichnen();

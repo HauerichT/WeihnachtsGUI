@@ -7,6 +7,7 @@ public class WeihnachtsGUI extends JFrame implements ActionListener {
 
     // Instanzvariablen
     private boolean keinSantaErzeugt = true;
+    private boolean keineTanneErzeugt = true;
     private final JRadioButton radioTannenbaum, radioWald;
     private final JCheckBox checkBoxSanta;
     private final JButton startButton;
@@ -27,7 +28,6 @@ public class WeihnachtsGUI extends JFrame implements ActionListener {
 
         // Leinwand erzeugen
         leinwand = new Leinwand();
-
 
         // Autor und zugehöriges Textfeld erzeugen
         autor = new JLabel("Autor: ");
@@ -124,9 +124,8 @@ public class WeihnachtsGUI extends JFrame implements ActionListener {
             status.setText("-");
         }
 
-
-        // Santa zeichnen, wenn noch kein Santa erzeugt wurde
-        if (e.getSource() == this.checkBoxSanta && keinSantaErzeugt && (radioTannenbaum.isSelected() || radioWald.isSelected())) {
+        // Santa zeichnen
+        if (e.getSource() == this.checkBoxSanta && !keineTanneErzeugt && keinSantaErzeugt) {
             leinwand.startAnimation();
             leinwand.santaZeichnen();
             keinSantaErzeugt = false;
@@ -140,10 +139,21 @@ public class WeihnachtsGUI extends JFrame implements ActionListener {
             leinwand.santaAusblenden();
         }
 
-        // Tannenbaum oder Wald zeichnen, wenn der Start-Button gedrückt wird
+        // Tannenbaum, Wald oder Santa zeichnen, wenn der Start-Button gedrückt wird
         if (e.getSource() == this.startButton) {
-            if (radioTannenbaum.isSelected()) leinwand.tannenbaumZeichnen(leinwand.getGraphics(), radioTannenbaum.getText());
-            if (radioWald.isSelected()) leinwand.tannenbaumZeichnen(leinwand.getGraphics(), radioWald.getText());
+            if (radioTannenbaum.isSelected()) {
+                leinwand.tannenbaumZeichnen(leinwand.getGraphics(), radioTannenbaum.getText());
+                keineTanneErzeugt = false;
+            }
+            if (radioWald.isSelected()) {
+                leinwand.tannenbaumZeichnen(leinwand.getGraphics(), radioWald.getText());
+                keineTanneErzeugt = false;
+            }
+            if (checkBoxSanta.isSelected() && keinSantaErzeugt) {
+                leinwand.startAnimation();
+                leinwand.santaZeichnen();
+                keinSantaErzeugt = false;
+            }
         }
 
     }
