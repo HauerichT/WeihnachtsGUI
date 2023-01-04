@@ -1,6 +1,6 @@
 import javax.swing.*;
 
-public class Main {
+public class WeihnachtsGUITest {
     public static void main(String[] args) {
 
         WeihnachtsGUI weihnachtsGUI = new WeihnachtsGUI();
