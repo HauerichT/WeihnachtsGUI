@@ -20,7 +20,6 @@ public class Leinwand extends JPanel implements KeyListener, ActionListener {
     Leinwand() {
         this.setBackground(Color.BLACK);
         this.addKeyListener(this);
-
         // Santa-Position
         this.santaX = -120;
         this.santaY = 60;
